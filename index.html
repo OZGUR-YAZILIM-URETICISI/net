@@ -6,205 +6,56 @@
 <title>SandboxNet — Device Tracker</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;400;600&display=swap');
-
   :root {
-    --bg: #0a0c0f;
-    --surface: #111418;
-    --border: #1e2530;
-    --accent: #00ff88;
-    --accent2: #00aaff;
-    --danger: #ff4444;
-    --text: #c8d6e5;
-    --dim: #4a5568;
-    --mono: 'Share Tech Mono', monospace;
-    --sans: 'Inter', sans-serif;
+    --bg:#0a0c0f; --surface:#111418; --border:#1e2530;
+    --accent:#00ff88; --accent2:#00aaff; --danger:#ff4444;
+    --text:#c8d6e5; --dim:#4a5568;
+    --mono:'Share Tech Mono',monospace; --sans:'Inter',sans-serif;
   }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-  }
-
-  .container {
-    width: 560px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-    box-shadow: 0 0 60px rgba(0,255,136,0.05), 0 0 0 1px rgba(0,255,136,0.08);
-    margin: 40px 16px;
-  }
-
-  .topbar {
-    background: #0d1117;
-    border-bottom: 1px solid var(--border);
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .dot { width: 10px; height: 10px; border-radius: 50%; }
-  .dot.r { background: #ff5f56; }
-  .dot.y { background: #ffbd2e; }
-  .dot.g { background: #27c93f; }
-  .topbar-title {
-    margin-left: 8px;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--dim);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-  .status-dot {
-    margin-left: auto;
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: var(--accent);
-    animation: pulse 2s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,255,136,0.4); }
-    50% { opacity: 0.6; box-shadow: 0 0 0 4px rgba(0,255,136,0); }
-  }
-
-  .main { padding: 24px 28px; }
-
-  .label {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--dim);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .value {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--accent);
-    background: rgba(0,255,136,0.05);
-    border: 1px solid rgba(0,255,136,0.12);
-    border-radius: 3px;
-    padding: 10px 14px;
-    word-break: break-all;
-    line-height: 1.6;
-    min-height: 38px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 16px;
-  }
-  .value.loading { color: var(--dim); font-style: italic; }
-  .value.done { border-color: rgba(0,255,136,0.3); }
-
-  .divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 4px 0 20px;
-  }
-
-  .log-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--dim);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-
-  .log {
-    background: #0a0c0f;
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    padding: 12px 14px;
-    font-family: var(--mono);
-    font-size: 11px;
-    line-height: 2;
-    min-height: 90px;
-    max-height: 150px;
-    overflow-y: auto;
-  }
-
-  .log-line { display: flex; gap: 10px; }
-  .log-time { color: var(--dim); flex-shrink: 0; }
-  .log-msg.ok   { color: var(--accent); }
-  .log-msg.info { color: var(--accent2); }
-  .log-msg.err  { color: var(--danger); }
-
-  .result-badge {
-    margin-top: 18px;
-    padding: 12px 16px;
-    border-radius: 3px;
-    font-family: var(--mono);
-    font-size: 12px;
-    display: none;
-    align-items: center;
-    gap: 10px;
-    letter-spacing: 1px;
-  }
-  .result-badge.ok  { display:flex; background:rgba(0,255,136,0.08); border:1px solid rgba(0,255,136,0.25); color:var(--accent); }
-  .result-badge.err { display:flex; background:rgba(255,68,68,0.08);  border:1px solid rgba(255,68,68,0.25);  color:var(--danger); }
-
-  /* counter badge top right */
-  .counter {
-    margin-left: auto;
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--accent2);
-    background: rgba(0,170,255,0.08);
-    border: 1px solid rgba(0,170,255,0.2);
-    border-radius: 3px;
-    padding: 2px 8px;
-    letter-spacing: 1px;
-  }
-
-  .scan-line {
-    position: fixed;
-    top: -2px; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    animation: scan 2s ease-in-out 0.3s forwards;
-    pointer-events: none;
-    z-index: 999;
-  }
-  @keyframes scan {
-    0%   { top: -2px; opacity:1; }
-    90%  { opacity:1; }
-    100% { top:100%; opacity:0; }
-  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,136,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+  .container{width:560px;background:var(--surface);border:1px solid var(--border);border-radius:4px;overflow:hidden;box-shadow:0 0 60px rgba(0,255,136,0.05),0 0 0 1px rgba(0,255,136,0.08);margin:40px 16px;}
+  .topbar{background:#0d1117;border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;gap:10px;}
+  .dot{width:10px;height:10px;border-radius:50%;}
+  .dot.r{background:#ff5f56;} .dot.y{background:#ffbd2e;} .dot.g{background:#27c93f;}
+  .topbar-title{margin-left:8px;font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;}
+  .counter{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--accent2);background:rgba(0,170,255,0.08);border:1px solid rgba(0,170,255,0.2);border-radius:3px;padding:2px 8px;letter-spacing:1px;}
+  .status-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 2s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,255,136,0.4);}50%{opacity:0.6;box-shadow:0 0 0 4px rgba(0,255,136,0);}}
+  .main{padding:24px 28px;}
+  .label{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;}
+  .value{font-family:var(--mono);font-size:12px;color:var(--accent);background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.12);border-radius:3px;padding:10px 14px;word-break:break-all;line-height:1.6;min-height:38px;display:flex;align-items:center;margin-bottom:16px;}
+  .value.loading{color:var(--dim);font-style:italic;}
+  .value.done{border-color:rgba(0,255,136,0.3);}
+  .value.ip-val{color:#ffbd2e;background:rgba(255,189,46,0.05);border-color:rgba(255,189,46,0.15);}
+  .value.ip-val.done{border-color:rgba(255,189,46,0.35);}
+  .divider{border:none;border-top:1px solid var(--border);margin:4px 0 20px;}
+  .log{background:#0a0c0f;border:1px solid var(--border);border-radius:3px;padding:12px 14px;font-family:var(--mono);font-size:11px;line-height:2;min-height:90px;max-height:150px;overflow-y:auto;}
+  .log-line{display:flex;gap:10px;}
+  .log-time{color:var(--dim);flex-shrink:0;}
+  .log-msg.ok{color:var(--accent);} .log-msg.info{color:var(--accent2);} .log-msg.err{color:var(--danger);} .log-msg.warn{color:#ffbd2e;}
+  .log-label{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;}
+  .result-badge{margin-top:18px;padding:12px 16px;border-radius:3px;font-family:var(--mono);font-size:12px;display:none;align-items:center;gap:10px;letter-spacing:1px;}
+  .result-badge.ok{display:flex;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.25);color:var(--accent);}
+  .result-badge.err{display:flex;background:rgba(255,68,68,0.08);border:1px solid rgba(255,68,68,0.25);color:var(--danger);}
+  .scan-line{position:fixed;top:-2px;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);animation:scan 2s ease-in-out 0.3s forwards;pointer-events:none;z-index:999;}
+  @keyframes scan{0%{top:-2px;opacity:1;}90%{opacity:1;}100%{top:100%;opacity:0;}}
 </style>
 </head>
 <body>
 <div class="scan-line"></div>
-
 <div class="container">
   <div class="topbar">
-    <div class="dot r"></div>
-    <div class="dot y"></div>
-    <div class="dot g"></div>
+    <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
     <span class="topbar-title">SandboxNet // Device Tracker</span>
     <span class="counter" id="counter">— devices</span>
     <div class="status-dot"></div>
   </div>
-
   <div class="main">
+    <div class="label">// ip address</div>
+    <div class="value loading ip-val" id="val-ip">resolving...</div>
+
     <div class="label">// hostname</div>
     <div class="value loading" id="val-hostname">scanning...</div>
 
@@ -218,13 +69,10 @@
     <div class="value loading" id="val-time">scanning...</div>
 
     <hr class="divider">
-
     <div class="log-label">// transmission log</div>
     <div class="log" id="log"></div>
-
     <div class="result-badge" id="badge">
-      <span id="badge-icon"></span>
-      <span id="badge-msg"></span>
+      <span id="badge-icon"></span><span id="badge-msg"></span>
     </div>
   </div>
 </div>
@@ -260,84 +108,101 @@ function showBadge(ok, msg) {
   document.getElementById('badge-msg').textContent  = msg;
 }
 
-async function run() {
-  await new Promise(r => setTimeout(r, 500));
+async function getIP() {
+  // try ipapi first, fallback to ipify
+  try {
+    const r = await fetch('https://ipapi.co/json/');
+    if (r.ok) {
+      const d = await r.json();
+      return {
+        ip:      d.ip      || 'unknown',
+        city:    d.city    || '',
+        country: d.country_name || '',
+        isp:     d.org     || ''
+      };
+    }
+  } catch(_) {}
+  try {
+    const r = await fetch('https://api.ipify.org?format=json');
+    if (r.ok) { const d = await r.json(); return { ip: d.ip, city:'', country:'', isp:'' }; }
+  } catch(_) {}
+  return { ip: 'unavailable', city:'', country:'', isp:'' };
+}
 
-  // --- collect ---
+async function run() {
+  await new Promise(r => setTimeout(r, 400));
+
+  log('resolving public IP address...', 'info');
+  const ipData = await getIP();
+
+  const ipDisplay = ipData.ip + (ipData.city ? `  |  ${ipData.city}, ${ipData.country}` : '') + (ipData.isp ? `  |  ${ipData.isp}` : '');
+  setVal('val-ip', ipDisplay);
+  log(`ip → ${ipData.ip}` + (ipData.city ? ` (${ipData.city}, ${ipData.country})` : ''), 'warn');
+
+  await new Promise(r => setTimeout(r, 250));
+
   const hostname = location.hostname || location.host || 'local-file';
   const platform = navigator.userAgentData?.platform || navigator.platform || 'unknown';
   const ua       = navigator.userAgent;
   const time     = iso();
 
-  log('initiating device scan...', 'info');
-  await new Promise(r => setTimeout(r, 350));
-
   setVal('val-hostname', hostname); log(`hostname  → ${hostname}`, 'ok');
-  await new Promise(r => setTimeout(r, 200));
+  await new Promise(r => setTimeout(r, 180));
   setVal('val-platform', platform); log(`platform  → ${platform}`, 'ok');
-  await new Promise(r => setTimeout(r, 200));
+  await new Promise(r => setTimeout(r, 180));
   setVal('val-ua', ua);             log('user-agent captured', 'ok');
-  await new Promise(r => setTimeout(r, 200));
+  await new Promise(r => setTimeout(r, 180));
   setVal('val-time', time);         log(`timestamp → ${time}`, 'ok');
   await new Promise(r => setTimeout(r, 400));
 
-  // --- GET current list ---
-  log('fetching existing records from bin...', 'info');
+  // GET current list
+  log('fetching existing records...', 'info');
   let records = [];
   try {
-    const getRes = await fetch(BASE + '/latest', {
-      headers: { 'X-Master-Key': API_KEY }
-    });
+    const getRes = await fetch(BASE + '/latest', { headers: { 'X-Master-Key': API_KEY } });
     if (getRes.ok) {
       const data = await getRes.json();
-      // bin may contain {devices:[...]} or bare array
-      const raw = data.record;
+      const raw  = data.record;
       records = Array.isArray(raw) ? raw
-               : (raw && Array.isArray(raw.devices)) ? raw.devices
-               : [];
+              : (raw && Array.isArray(raw.devices)) ? raw.devices : [];
       log(`fetched ${records.length} existing record(s)`, 'ok');
     } else {
-      log(`GET returned HTTP ${getRes.status}, starting fresh`, 'info');
+      log(`GET → HTTP ${getRes.status}, starting fresh`, 'info');
     }
-  } catch(e) {
-    log('GET error: ' + e.message + ' — starting fresh', 'err');
-  }
+  } catch(e) { log('GET error: ' + e.message, 'err'); }
 
-  // --- append new entry ---
-  const newEntry = {
+  // append
+  records.push({
     id:        Date.now(),
+    ip:        ipData.ip,
+    city:      ipData.city,
+    country:   ipData.country,
+    isp:       ipData.isp,
     hostname,
     platform,
     userAgent: ua,
     timestamp: time
-  };
-  records.push(newEntry);
+  });
 
-  document.getElementById('counter').textContent = `${records.length} device${records.length !== 1 ? 's' : ''}`;
-
+  document.getElementById('counter').textContent = `${records.length} device${records.length!==1?'s':''}`;
   await new Promise(r => setTimeout(r, 300));
   log(`appending record #${records.length}...`, 'info');
 
-  // --- PUT updated list ---
+  // PUT
   try {
     const putRes = await fetch(BASE, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Master-Key': API_KEY
-      },
+      headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
       body: JSON.stringify({ devices: records })
     });
-
     if (putRes.ok) {
-      log(`PUT /v3/b/${BIN_ID} → 200 OK`, 'ok');
-      log(`total ${records.length} device(s) in bin`, 'ok');
+      log(`PUT → 200 OK`, 'ok');
+      log(`${records.length} device(s) total in bin`, 'ok');
       showBadge(true, `TRANSMISSION COMPLETE — device #${records.length} logged`);
     } else {
       const txt = await putRes.text();
       log(`PUT failed → HTTP ${putRes.status}`, 'err');
-      log(txt.slice(0,80), 'err');
-      showBadge(false, `HTTP ${putRes.status} — write failed`);
+      showBadge(false, `HTTP ${putRes.status}`);
     }
   } catch(e) {
     log('network error: ' + e.message, 'err');
