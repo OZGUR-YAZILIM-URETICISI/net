@@ -132,6 +132,10 @@
 const STORAGE_KEY = 'sandboxnet_device_log_v2';
 const LOG_VERSION = '2.1';
 
+// ⚠️ JSONBin Ayarları - BURAYA KENDİNİN DEĞERLERİNİ GİR
+const JSONBIN_BIN_ID = '6a770b89da38895dfec989ea'; // jsonbin.io'dan kopyala
+const JSONBIN_MASTER_KEY = '$2a$10$ULZJVOgU7oieoeE2DB/6peM7PuSafi2y/0fNRWLSFQaWcf4td35J6'; // API Keys'ten kopyala
+
 function ts()  { return new Date().toLocaleTimeString('tr-TR',{hour12:false}); }
 function iso() { return new Date().toISOString(); }
 
@@ -492,11 +496,38 @@ async function run() {
   appendToStorageLog(logContent);
 
   log('device fingerprint created', 'ok');
+  
+  // JSONBin'e yükle
+  const deviceData = {
+    id: Date.now(),
+    timestamp: time,
+    ip: ipData.ip,
+    city: ipData.city,
+    country: ipData.country,
+    browser: browserDisplay,
+    platform: platform,
+    deviceType: deviceType,
+    screen: screen,
+    gpu: gpu.vendor,
+    cores: cores,
+    memory: memory,
+    timezone: tz,
+    language: lang,
+    touch: touchStr,
+    storage: storage,
+    connection: conn,
+    userAgent: navigator.userAgent
+  };
+
+  await uploadToJSONBin(deviceData);
+
   log('auto-downloading log.txt...', 'info');
 
   // Otomatik indir
   await new Promise(r => setTimeout(r, 500));
   autoDownloadLog(logContent);
+  
+  showBadge(true, '✓ device logged & synced');
 }
 
 function autoDownloadLog(content) {
@@ -511,7 +542,44 @@ function autoDownloadLog(content) {
   URL.revokeObjectURL(url);
   
   log('✓ log.txt downloaded successfully', 'ok');
-  showBadge(true, '✓ device logged & log.txt created');
+}
+
+async function uploadToJSONBin(deviceData) {
+  if (!JSONBIN_BIN_ID || JSONBIN_BIN_ID === 'YOUR_BIN_ID_HERE') {
+    log('JSONBin config missing - skipping cloud upload', 'warn');
+    return false;
+  }
+
+  try {
+    log('uploading to jsonbin...', 'info');
+    
+    const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': JSONBIN_MASTER_KEY,
+        'X-Bin-Versioning': 'true'
+      },
+      body: JSON.stringify({
+        devices: [deviceData],
+        lastUpdated: new Date().toISOString(),
+        version: LOG_VERSION
+      })
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      log('✓ jsonbin updated successfully', 'ok');
+      return true;
+    } else {
+      log('jsonbin upload failed: ' + response.status, 'err');
+      return false;
+    }
+  } catch (e) {
+    log('jsonbin error: ' + e.message, 'err');
+    console.error('JSONBin Error:', e);
+    return false;
+  }
 }
 
 document.getElementById('download-btn').addEventListener('click', downloadLog);
