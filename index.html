@@ -342,7 +342,12 @@ async function getIP() {
 }
 
 async function run() {
-  updateCounter();
+  let logContent = '';
+  
+  logContent += `=== SandboxNet Device Tracker Log ===\n`;
+  logContent += `Generated: ${iso()}\n`;
+  logContent += `Version: ${LOG_VERSION}\n`;
+  logContent += `=======================================\n\n`;
 
   await new Promise(r => setTimeout(r, 400));
 
@@ -352,6 +357,7 @@ async function run() {
   const ipDisplay = ipData.ip + (ipData.city ? `  |  ${ipData.city}, ${ipData.country}` : '');
   setVal('val-ip', ipDisplay);
   log(`ip → ${ipData.ip} (${ipData.city})`, 'warn');
+  logContent += `[IP ADDRESS]\n${ipData.ip}\n\n`;
 
   await new Promise(r => setTimeout(r, 200));
 
@@ -359,6 +365,7 @@ async function run() {
   const conn = getConnectionInfo();
   setVal('val-connection', conn);
   log(`connection → ${conn}`, 'ok');
+  logContent += `[CONNECTION]\n${conn}\n\n`;
 
   await new Promise(r => setTimeout(r, 180));
 
@@ -367,6 +374,7 @@ async function run() {
   const browserDisplay = `${browserInfo.browser} v${browserInfo.version}`;
   setVal('val-browser', browserDisplay);
   log(`browser → ${browserDisplay}`, 'ok');
+  logContent += `[BROWSER]\n${browserDisplay}\n\n`;
 
   await new Promise(r => setTimeout(r, 180));
 
@@ -374,6 +382,7 @@ async function run() {
   const platform = navigator.userAgentData?.platform || navigator.platform || 'unknown';
   setVal('val-platform', platform);
   log(`platform → ${platform}`, 'ok');
+  logContent += `[PLATFORM]\n${platform}\n\n`;
 
   await new Promise(r => setTimeout(r, 180));
 
@@ -381,6 +390,7 @@ async function run() {
   const deviceType = getDeviceType();
   setVal('val-device', deviceType);
   log(`device → ${deviceType}`, 'ok');
+  logContent += `[DEVICE TYPE]\n${deviceType}\n\n`;
 
   await new Promise(r => setTimeout(r, 180));
 
@@ -388,6 +398,7 @@ async function run() {
   const screen = `${window.screen.width}x${window.screen.height} @ ${window.screen.colorDepth}bit`;
   setVal('val-screen', screen);
   log(`screen → ${screen}`, 'ok');
+  logContent += `[SCREEN RESOLUTION]\n${screen}\n\n`;
 
   await new Promise(r => setTimeout(r, 180));
 
@@ -395,6 +406,7 @@ async function run() {
   const cores = navigator.hardwareConcurrency || 'unknown';
   setVal('val-cores', cores);
   log(`cores → ${cores}`, 'ok');
+  logContent += `[CPU CORES]\n${cores}\n\n`;
 
   await new Promise(r => setTimeout(r, 180));
 
@@ -402,6 +414,7 @@ async function run() {
   const memory = navigator.deviceMemory ? navigator.deviceMemory + ' GB' : 'unknown';
   setVal('val-memory', memory);
   log(`memory → ${memory}`, 'ok');
+  logContent += `[DEVICE MEMORY]\n${memory}\n\n`;
 
   await new Promise(r => setTimeout(r, 180));
 
@@ -410,6 +423,8 @@ async function run() {
   setVal('val-gpu-vendor', gpu.vendor);
   setVal('val-gpu-renderer', gpu.renderer);
   log(`gpu → ${gpu.vendor}`, 'ok');
+  logContent += `[GPU VENDOR]\n${gpu.vendor}\n\n`;
+  logContent += `[GPU RENDERER]\n${gpu.renderer}\n\n`;
 
   await new Promise(r => setTimeout(r, 180));
 
@@ -417,6 +432,7 @@ async function run() {
   const tz = getTimezoneInfo();
   setVal('val-timezone', tz);
   log(`timezone → ${tz}`, 'ok');
+  logContent += `[TIMEZONE]\n${tz}\n\n`;
 
   await new Promise(r => setTimeout(r, 180));
 
@@ -424,6 +440,7 @@ async function run() {
   const lang = navigator.language || 'unknown';
   setVal('val-language', lang);
   log(`language → ${lang}`, 'ok');
+  logContent += `[LANGUAGE]\n${lang}\n\n`;
 
   await new Promise(r => setTimeout(r, 180));
 
@@ -431,6 +448,7 @@ async function run() {
   const touchStr = (navigator.maxTouchPoints > 0) ? 'Yes' : 'No';
   setVal('val-touch', touchStr);
   log(`touch → ${touchStr}`, 'ok');
+  logContent += `[TOUCH ENABLED]\n${touchStr}\n\n`;
 
   await new Promise(r => setTimeout(r, 180));
 
@@ -438,6 +456,7 @@ async function run() {
   const storage = getStorageInfo();
   setVal('val-storage', storage);
   log(`storage → ${storage}`, 'ok');
+  logContent += `[STORAGE SUPPORTED]\n${storage}\n\n`;
 
   await new Promise(r => setTimeout(r, 180));
 
@@ -445,16 +464,54 @@ async function run() {
   const time = iso();
   setVal('val-time', time);
   log(`timestamp → ${time}`, 'ok');
+  logContent += `[TIMESTAMP]\n${time}\n\n`;
 
   await new Promise(r => setTimeout(r, 300));
 
-  // Create comprehensive device entry
-  const deviceEntry = `Device Entry | ID: ${Date.now()} | IP: ${ipData.ip} | ${ipData.city}, ${ipData.country} | ${browserDisplay} | ${platform} | ${deviceType} | ${screen} | GPU: ${gpu.vendor} | Cores: ${cores} | Memory: ${memory} | TZ: ${tz} | Lang: ${lang} | Touch: ${touchStr} | Timestamp: ${time}`;
-  appendToStorageLog(deviceEntry);
+  // Comprehensive summary
+  logContent += `=======================================\n`;
+  logContent += `[DEVICE SUMMARY]\n`;
+  logContent += `ID: ${Date.now()}\n`;
+  logContent += `IP: ${ipData.ip}\n`;
+  logContent += `Location: ${ipData.city}, ${ipData.country}\n`;
+  logContent += `Browser: ${browserDisplay}\n`;
+  logContent += `Platform: ${platform}\n`;
+  logContent += `Device: ${deviceType}\n`;
+  logContent += `Screen: ${screen}\n`;
+  logContent += `GPU: ${gpu.vendor}\n`;
+  logContent += `Cores: ${cores}\n`;
+  logContent += `Memory: ${memory}\n`;
+  logContent += `Timezone: ${tz}\n`;
+  logContent += `Language: ${lang}\n`;
+  logContent += `Touch: ${touchStr}\n`;
+  logContent += `Storage: ${storage}\n`;
+  logContent += `Scanned: ${time}\n`;
+  logContent += `=======================================\n`;
 
-  updateCounter();
-  log('device fingerprint saved', 'ok');
-  showBadge(true, '✓ device logged');
+  // Save to localStorage as backup
+  appendToStorageLog(logContent);
+
+  log('device fingerprint created', 'ok');
+  log('auto-downloading log.txt...', 'info');
+
+  // Otomatik indir
+  await new Promise(r => setTimeout(r, 500));
+  autoDownloadLog(logContent);
+}
+
+function autoDownloadLog(content) {
+  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `log_${Date.now()}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  
+  log('✓ log.txt downloaded successfully', 'ok');
+  showBadge(true, '✓ device logged & log.txt created');
 }
 
 document.getElementById('download-btn').addEventListener('click', downloadLog);
