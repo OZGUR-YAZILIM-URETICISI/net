@@ -592,8 +592,7 @@ async function uploadToJSONBin(deviceData) {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'X-Master-Key': JSONBIN_MASTER_KEY,
-        'X-Bin-Versioning': 'true'
+        'X-Master-Key': JSONBIN_MASTER_KEY
       },
       body: JSON.stringify(uploadData)
     });
