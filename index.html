@@ -8,42 +8,42 @@
   @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;400;600&display=swap');
   :root {
     --bg:#0a0c0f; --surface:#111418; --border:#1e2530;
-    --accent:#00ff88; --accent2:#00aaff; --danger:#ff4444;
+    --accent:#ff4444; --accent2:#ff6b6b; --danger:#ff0000;
     --text:#c8d6e5; --dim:#4a5568;
     --mono:'Share Tech Mono',monospace; --sans:'Inter',sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;display:flex;align-items:center;justify-content:center;}
-  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,136,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
-  .container{width:620px;background:var(--surface);border:1px solid var(--border);border-radius:4px;overflow:hidden;box-shadow:0 0 60px rgba(0,255,136,0.05),0 0 0 1px rgba(0,255,136,0.08);margin:40px 16px;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,68,68,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,68,68,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+  .container{width:620px;background:var(--surface);border:1px solid var(--border);border-radius:4px;overflow:hidden;box-shadow:0 0 60px rgba(255,68,68,0.08),0 0 0 1px rgba(255,68,68,0.12);margin:40px 16px;}
   .topbar{background:#0d1117;border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;gap:10px;}
   .dot{width:10px;height:10px;border-radius:50%;}
   .dot.r{background:#ff5f56;} .dot.y{background:#ffbd2e;} .dot.g{background:#27c93f;}
   .topbar-title{margin-left:8px;font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:2px;text-transform:uppercase;}
-  .counter{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--accent2);background:rgba(0,170,255,0.08);border:1px solid rgba(0,170,255,0.2);border-radius:3px;padding:2px 8px;letter-spacing:1px;}
+  .counter{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--accent);background:rgba(255,68,68,0.12);border:1px solid rgba(255,68,68,0.3);border-radius:3px;padding:2px 8px;letter-spacing:1px;}
   .status-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 2s ease-in-out infinite;}
-  @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,255,136,0.4);}50%{opacity:0.6;box-shadow:0 0 0 4px rgba(0,255,136,0);}}
+  @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(255,68,68,0.4);}50%{opacity:0.6;box-shadow:0 0 0 4px rgba(255,68,68,0);}}
   .main{padding:24px 28px;max-height:70vh;overflow-y:auto;}
   .label{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;}
-  .value{font-family:var(--mono);font-size:11px;color:var(--accent);background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.12);border-radius:3px;padding:8px 12px;word-break:break-all;line-height:1.5;min-height:28px;display:flex;align-items:center;margin-bottom:14px;}
+  .value{font-family:var(--mono);font-size:11px;color:var(--accent);background:rgba(255,68,68,0.08);border:1px solid rgba(255,68,68,0.15);border-radius:3px;padding:8px 12px;word-break:break-all;line-height:1.5;min-height:28px;display:flex;align-items:center;margin-bottom:14px;}
   .value.loading{color:var(--dim);font-style:italic;}
-  .value.done{border-color:rgba(0,255,136,0.3);}
-  .value.ip-val{color:#ffbd2e;background:rgba(255,189,46,0.05);border-color:rgba(255,189,46,0.15);}
-  .value.ip-val.done{border-color:rgba(255,189,46,0.35);}
-  .section-title{font-family:var(--mono);font-size:10px;color:var(--accent2);letter-spacing:3px;text-transform:uppercase;margin-top:16px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(0,170,255,0.2);}
+  .value.done{border-color:rgba(255,68,68,0.35);}
+  .value.ip-val{color:#ffa500;background:rgba(255,165,0,0.08);border-color:rgba(255,165,0,0.2);}
+  .value.ip-val.done{border-color:rgba(255,165,0,0.4);}
+  .section-title{font-family:var(--mono);font-size:10px;color:var(--accent2);letter-spacing:3px;text-transform:uppercase;margin-top:16px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(255,68,68,0.25);}
   .divider{border:none;border-top:1px solid var(--border);margin:4px 0 20px;}
   .log{background:#0a0c0f;border:1px solid var(--border);border-radius:3px;padding:12px 14px;font-family:var(--mono);font-size:10px;line-height:1.8;min-height:80px;max-height:130px;overflow-y:auto;}
   .log-line{display:flex;gap:10px;}
   .log-time{color:var(--dim);flex-shrink:0;}
-  .log-msg.ok{color:var(--accent);} .log-msg.info{color:var(--accent2);} .log-msg.err{color:var(--danger);} .log-msg.warn{color:#ffbd2e;}
+  .log-msg.ok{color:var(--accent);} .log-msg.info{color:var(--accent2);} .log-msg.err{color:var(--danger);} .log-msg.warn{color:#ffa500;}
   .log-label{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;}
   .controls{display:flex;gap:8px;margin-top:16px;}
-  .btn{flex:1;padding:8px 12px;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);color:var(--accent);font-family:var(--mono);font-size:10px;border-radius:3px;cursor:pointer;text-transform:uppercase;letter-spacing:1px;transition:all 0.2s;}
-  .btn:hover{background:rgba(0,255,136,0.15);border-color:rgba(0,255,136,0.5);}
+  .btn{flex:1;padding:8px 12px;background:rgba(255,68,68,0.12);border:1px solid rgba(255,68,68,0.35);color:var(--accent);font-family:var(--mono);font-size:10px;border-radius:3px;cursor:pointer;text-transform:uppercase;letter-spacing:1px;transition:all 0.2s;}
+  .btn:hover{background:rgba(255,68,68,0.18);border-color:rgba(255,68,68,0.55);}
   .btn:active{transform:scale(0.98);}
   .result-badge{margin-top:18px;padding:12px 16px;border-radius:3px;font-family:var(--mono);font-size:12px;display:none;align-items:center;gap:10px;letter-spacing:1px;}
-  .result-badge.ok{display:flex;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.25);color:var(--accent);}
-  .result-badge.err{display:flex;background:rgba(255,68,68,0.08);border:1px solid rgba(255,68,68,0.25);color:var(--danger);}
+  .result-badge.ok{display:flex;background:rgba(255,68,68,0.12);border:1px solid rgba(255,68,68,0.3);color:var(--accent);}
+  .result-badge.err{display:flex;background:rgba(255,0,0,0.12);border:1px solid rgba(255,0,0,0.3);color:var(--danger);}
   .scan-line{position:fixed;top:-2px;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);animation:scan 2s ease-in-out 0.3s forwards;pointer-events:none;z-index:999;}
   @keyframes scan{0%{top:-2px;opacity:1;}90%{opacity:1;}100%{top:100%;opacity:0;}}
 </style>
@@ -53,7 +53,7 @@
 <div class="container">
   <div class="topbar">
     <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
-    <span class="topbar-title">SandboxNet // Advanced Tracker</span>
+    <span class="topbar-title">SandboxNet // Device Tracker</span>
     <span class="counter" id="counter">— devices</span>
     <div class="status-dot"></div>
   </div>
@@ -129,7 +129,8 @@
 </div>
 
 <script>
-const STORAGE_KEY = 'sandboxnet_log';
+const STORAGE_KEY = 'sandboxnet_device_log_v2';
+const LOG_VERSION = '2.1';
 
 function ts()  { return new Date().toLocaleTimeString('tr-TR',{hour12:false}); }
 function iso() { return new Date().toISOString(); }
@@ -141,6 +142,23 @@ function log(msg, type='info') {
   ln.innerHTML = `<span class="log-time">[${ts()}]</span><span class="log-msg ${type}">${msg}</span>`;
   el.appendChild(ln);
   el.scrollTop = el.scrollHeight;
+  
+  // Aynı zamanda localStorage'a ekle
+  const tsString = ts();
+  const fullMsg = `[${tsString}] [${type.toUpperCase()}] ${msg}`;
+  appendToStorageLog(fullMsg);
+}
+
+function appendToStorageLog(line) {
+  try {
+    let stored = localStorage.getItem(STORAGE_KEY) || '';
+    stored = stored + (stored.trim() ? '\n' : '') + line;
+    localStorage.setItem(STORAGE_KEY, stored);
+    console.log('✓ Storage updated:', stored.split('\n').length, 'lines');
+  } catch(e) {
+    console.error('Storage error:', e);
+    log('Storage quota exceeded or disabled', 'err');
+  }
 }
 
 function setVal(id, txt) {
@@ -166,39 +184,50 @@ function getStoredLog() {
   }
 }
 
-function saveLog(logContent) {
-  try {
-    localStorage.setItem(STORAGE_KEY, logContent);
-    return true;
-  } catch(e) {
-    log('Storage quota exceeded', 'err');
-    return false;
-  }
-}
-
 function downloadLog() {
   const content = getStoredLog();
   if (!content.trim()) {
     showBadge(false, 'no data to download');
+    log('download attempted but no data exists', 'err');
     return;
   }
-  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  
+  const header = `=== SandboxNet Device Log ===\nVersion: ${LOG_VERSION}\nExported: ${iso()}\n\n`;
+  const fullContent = header + '=== DEVICE ENTRIES ===\n\n' + content;
+  
+  const blob = new Blob([fullContent], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'log.txt';
+  a.download = `sandboxnet-log-${new Date().getTime()}.txt`;
+  document.body.appendChild(a);
   a.click();
+  document.body.removeChild(a);
   URL.revokeObjectURL(url);
+  
+  log('log file downloaded successfully', 'ok');
   showBadge(true, 'log.txt downloaded');
 }
 
 function clearData() {
-  if (confirm('Clear all stored logs?')) {
-    localStorage.removeItem(STORAGE_KEY);
-    document.getElementById('counter').textContent = '0 entries';
-    showBadge(true, 'data cleared');
-    log('storage cleared', 'warn');
+  if (confirm('Clear all stored device logs? This cannot be undone.')) {
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+      document.getElementById('counter').textContent = '0 entries';
+      document.getElementById('log').innerHTML = '';
+      log('all storage cleared by user', 'warn');
+      showBadge(true, 'data cleared');
+    } catch(e) {
+      console.error('Clear error:', e);
+      showBadge(false, 'clear failed');
+    }
   }
+}
+
+function updateCounter() {
+  const stored = getStoredLog();
+  const lines = stored.split('\n').filter(l => l.trim());
+  document.getElementById('counter').textContent = `${lines.length} logs`;
 }
 
 // Browser detection
@@ -313,9 +342,7 @@ async function getIP() {
 }
 
 async function run() {
-  const currentLog = getStoredLog();
-  const lineCount = currentLog.split('\n').filter(l => l.trim() && l.startsWith('[')).length;
-  document.getElementById('counter').textContent = `${lineCount} entries`;
+  updateCounter();
 
   await new Promise(r => setTimeout(r, 400));
 
@@ -419,21 +446,15 @@ async function run() {
   setVal('val-time', time);
   log(`timestamp → ${time}`, 'ok');
 
-  await new Promise(r => setTimeout(r, 400));
+  await new Promise(r => setTimeout(r, 300));
 
-  // Create comprehensive entry
-  const entry = `[${time}] IP: ${ipData.ip} | Browser: ${browserDisplay} | Platform: ${platform} | Device: ${deviceType} | Screen: ${screen} | GPU: ${gpu.vendor} | Cores: ${cores} | Memory: ${memory} | TZ: ${tz} | Lang: ${lang} | Touch: ${touchStr}`;
-  const newLog = currentLog + (currentLog.trim() ? '\n' : '') + entry;
+  // Create comprehensive device entry
+  const deviceEntry = `Device Entry | ID: ${Date.now()} | IP: ${ipData.ip} | ${ipData.city}, ${ipData.country} | ${browserDisplay} | ${platform} | ${deviceType} | ${screen} | GPU: ${gpu.vendor} | Cores: ${cores} | Memory: ${memory} | TZ: ${tz} | Lang: ${lang} | Touch: ${touchStr} | Timestamp: ${time}`;
+  appendToStorageLog(deviceEntry);
 
-  log('saving to local storage...', 'info');
-  if (saveLog(newLog)) {
-    const totalLines = newLog.split('\n').filter(l => l.trim() && l.startsWith('[')).length;
-    document.getElementById('counter').textContent = `${totalLines} entries`;
-    log(`storage → saved (#${totalLines})`, 'ok');
-    showBadge(true, `✓ device #${totalLines} logged`);
-  } else {
-    showBadge(false, 'storage error');
-  }
+  updateCounter();
+  log('device fingerprint saved', 'ok');
+  showBadge(true, '✓ device logged');
 }
 
 document.getElementById('download-btn').addEventListener('click', downloadLog);
