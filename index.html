@@ -15,7 +15,7 @@
   *{margin:0;padding:0;box-sizing:border-box;}
   body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;display:flex;align-items:center;justify-content:center;}
   body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,136,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
-  .container{width:560px;background:var(--surface);border:1px solid var(--border);border-radius:4px;overflow:hidden;box-shadow:0 0 60px rgba(0,255,136,0.05),0 0 0 1px rgba(0,255,136,0.08);margin:40px 16px;}
+  .container{width:620px;background:var(--surface);border:1px solid var(--border);border-radius:4px;overflow:hidden;box-shadow:0 0 60px rgba(0,255,136,0.05),0 0 0 1px rgba(0,255,136,0.08);margin:40px 16px;}
   .topbar{background:#0d1117;border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;gap:10px;}
   .dot{width:10px;height:10px;border-radius:50%;}
   .dot.r{background:#ff5f56;} .dot.y{background:#ffbd2e;} .dot.g{background:#27c93f;}
@@ -23,19 +23,24 @@
   .counter{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--accent2);background:rgba(0,170,255,0.08);border:1px solid rgba(0,170,255,0.2);border-radius:3px;padding:2px 8px;letter-spacing:1px;}
   .status-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 2s ease-in-out infinite;}
   @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,255,136,0.4);}50%{opacity:0.6;box-shadow:0 0 0 4px rgba(0,255,136,0);}}
-  .main{padding:24px 28px;}
+  .main{padding:24px 28px;max-height:70vh;overflow-y:auto;}
   .label{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:3px;text-transform:uppercase;margin-bottom:6px;}
-  .value{font-family:var(--mono);font-size:12px;color:var(--accent);background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.12);border-radius:3px;padding:10px 14px;word-break:break-all;line-height:1.6;min-height:38px;display:flex;align-items:center;margin-bottom:16px;}
+  .value{font-family:var(--mono);font-size:11px;color:var(--accent);background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.12);border-radius:3px;padding:8px 12px;word-break:break-all;line-height:1.5;min-height:28px;display:flex;align-items:center;margin-bottom:14px;}
   .value.loading{color:var(--dim);font-style:italic;}
   .value.done{border-color:rgba(0,255,136,0.3);}
   .value.ip-val{color:#ffbd2e;background:rgba(255,189,46,0.05);border-color:rgba(255,189,46,0.15);}
   .value.ip-val.done{border-color:rgba(255,189,46,0.35);}
+  .section-title{font-family:var(--mono);font-size:10px;color:var(--accent2);letter-spacing:3px;text-transform:uppercase;margin-top:16px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(0,170,255,0.2);}
   .divider{border:none;border-top:1px solid var(--border);margin:4px 0 20px;}
-  .log{background:#0a0c0f;border:1px solid var(--border);border-radius:3px;padding:12px 14px;font-family:var(--mono);font-size:11px;line-height:2;min-height:90px;max-height:150px;overflow-y:auto;}
+  .log{background:#0a0c0f;border:1px solid var(--border);border-radius:3px;padding:12px 14px;font-family:var(--mono);font-size:10px;line-height:1.8;min-height:80px;max-height:130px;overflow-y:auto;}
   .log-line{display:flex;gap:10px;}
   .log-time{color:var(--dim);flex-shrink:0;}
   .log-msg.ok{color:var(--accent);} .log-msg.info{color:var(--accent2);} .log-msg.err{color:var(--danger);} .log-msg.warn{color:#ffbd2e;}
   .log-label{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;}
+  .controls{display:flex;gap:8px;margin-top:16px;}
+  .btn{flex:1;padding:8px 12px;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);color:var(--accent);font-family:var(--mono);font-size:10px;border-radius:3px;cursor:pointer;text-transform:uppercase;letter-spacing:1px;transition:all 0.2s;}
+  .btn:hover{background:rgba(0,255,136,0.15);border-color:rgba(0,255,136,0.5);}
+  .btn:active{transform:scale(0.98);}
   .result-badge{margin-top:18px;padding:12px 16px;border-radius:3px;font-family:var(--mono);font-size:12px;display:none;align-items:center;gap:10px;letter-spacing:1px;}
   .result-badge.ok{display:flex;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.25);color:var(--accent);}
   .result-badge.err{display:flex;background:rgba(255,68,68,0.08);border:1px solid rgba(255,68,68,0.25);color:var(--danger);}
@@ -48,29 +53,75 @@
 <div class="container">
   <div class="topbar">
     <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
-    <span class="topbar-title">SandboxNet // Device Tracker</span>
+    <span class="topbar-title">SandboxNet // Advanced Tracker</span>
     <span class="counter" id="counter">— devices</span>
     <div class="status-dot"></div>
   </div>
   <div class="main">
-    <div class="label">// ip address</div>
+    <!-- Network -->
+    <div class="section-title">// network</div>
+    <div class="label">ip address</div>
     <div class="value loading ip-val" id="val-ip">resolving...</div>
 
-    <div class="label">// hostname</div>
-    <div class="value loading" id="val-hostname">scanning...</div>
+    <div class="label">connection</div>
+    <div class="value loading" id="val-connection">scanning...</div>
 
-    <div class="label">// platform</div>
+    <!-- System -->
+    <div class="section-title">// system</div>
+    <div class="label">browser</div>
+    <div class="value loading" id="val-browser">scanning...</div>
+
+    <div class="label">platform</div>
     <div class="value loading" id="val-platform">scanning...</div>
 
-    <div class="label">// user agent</div>
-    <div class="value loading" id="val-ua">scanning...</div>
+    <div class="label">device type</div>
+    <div class="value loading" id="val-device">scanning...</div>
 
-    <div class="label">// timestamp</div>
+    <!-- Hardware -->
+    <div class="section-title">// hardware</div>
+    <div class="label">screen resolution</div>
+    <div class="value loading" id="val-screen">scanning...</div>
+
+    <div class="label">cpu cores</div>
+    <div class="value loading" id="val-cores">scanning...</div>
+
+    <div class="label">device memory</div>
+    <div class="value loading" id="val-memory">scanning...</div>
+
+    <!-- GPU -->
+    <div class="section-title">// gpu</div>
+    <div class="label">webgl vendor</div>
+    <div class="value loading" id="val-gpu-vendor">scanning...</div>
+
+    <div class="label">webgl renderer</div>
+    <div class="value loading" id="val-gpu-renderer">scanning...</div>
+
+    <!-- Features -->
+    <div class="section-title">// features</div>
+    <div class="label">timezone</div>
+    <div class="value loading" id="val-timezone">scanning...</div>
+
+    <div class="label">language</div>
+    <div class="value loading" id="val-language">scanning...</div>
+
+    <div class="label">touch enabled</div>
+    <div class="value loading" id="val-touch">scanning...</div>
+
+    <div class="label">storage supported</div>
+    <div class="value loading" id="val-storage">scanning...</div>
+
+    <div class="label">timestamp</div>
     <div class="value loading" id="val-time">scanning...</div>
 
     <hr class="divider">
     <div class="log-label">// transmission log</div>
     <div class="log" id="log"></div>
+    
+    <div class="controls">
+      <button class="btn" id="download-btn">Download log.txt</button>
+      <button class="btn" id="clear-btn">Clear Data</button>
+    </div>
+    
     <div class="result-badge" id="badge">
       <span id="badge-icon"></span><span id="badge-msg"></span>
     </div>
@@ -78,9 +129,7 @@
 </div>
 
 <script>
-const BIN_ID  = '6a2faee1da38895dfec22f9f';
-const API_KEY = '$2a$10$TOEqaa37KCsELpkZGXQ2duCl0jcLdSQxU4J9zj8VP8gYXKsv6fz2S';
-const BASE    = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+const STORAGE_KEY = 'sandboxnet_log';
 
 function ts()  { return new Date().toLocaleTimeString('tr-TR',{hour12:false}); }
 function iso() { return new Date().toISOString(); }
@@ -103,13 +152,147 @@ function setVal(id, txt) {
 
 function showBadge(ok, msg) {
   const b = document.getElementById('badge');
+  b.className = 'result-badge';
   b.classList.add(ok ? 'ok' : 'err');
   document.getElementById('badge-icon').textContent = ok ? '✓' : '✗';
-  document.getElementById('badge-msg').textContent  = msg;
+  document.getElementById('badge-msg').textContent = msg;
+}
+
+function getStoredLog() {
+  try {
+    return localStorage.getItem(STORAGE_KEY) || '';
+  } catch(_) {
+    return '';
+  }
+}
+
+function saveLog(logContent) {
+  try {
+    localStorage.setItem(STORAGE_KEY, logContent);
+    return true;
+  } catch(e) {
+    log('Storage quota exceeded', 'err');
+    return false;
+  }
+}
+
+function downloadLog() {
+  const content = getStoredLog();
+  if (!content.trim()) {
+    showBadge(false, 'no data to download');
+    return;
+  }
+  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'log.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+  showBadge(true, 'log.txt downloaded');
+}
+
+function clearData() {
+  if (confirm('Clear all stored logs?')) {
+    localStorage.removeItem(STORAGE_KEY);
+    document.getElementById('counter').textContent = '0 entries';
+    showBadge(true, 'data cleared');
+    log('storage cleared', 'warn');
+  }
+}
+
+// Browser detection
+function getBrowserInfo() {
+  const ua = navigator.userAgent;
+  let browser = 'Unknown';
+  let version = 'Unknown';
+
+  if (ua.includes('Firefox')) {
+    browser = 'Firefox';
+    version = ua.match(/Firefox\/(\d+)/)?.[1] || 'Unknown';
+  } else if (ua.includes('Chrome')) {
+    browser = 'Chrome';
+    version = ua.match(/Chrome\/(\d+)/)?.[1] || 'Unknown';
+  } else if (ua.includes('Safari')) {
+    browser = 'Safari';
+    version = ua.match(/Version\/(\d+)/)?.[1] || 'Unknown';
+  } else if (ua.includes('Edge')) {
+    browser = 'Edge';
+    version = ua.match(/Edg\/(\d+)/)?.[1] || 'Unknown';
+  }
+  
+  return { browser, version };
+}
+
+// Device type detection
+function getDeviceType() {
+  const w = window.innerWidth;
+  const touch = navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+  
+  if (w <= 768 && touch) return 'Mobile';
+  if (w <= 1024 && touch) return 'Tablet';
+  return 'Desktop';
+}
+
+// WebGL info
+function getWebGLInfo() {
+  try {
+    const canvas = document.createElement('canvas');
+    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if (!gl) return { vendor: 'N/A', renderer: 'N/A' };
+    
+    const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+    const vendor = debugInfo ? gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) : 'N/A';
+    const renderer = debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : 'N/A';
+    
+    return { vendor, renderer };
+  } catch(_) {
+    return { vendor: 'N/A', renderer: 'N/A' };
+  }
+}
+
+// Connection info
+function getConnectionInfo() {
+  const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (!conn) return 'N/A';
+  
+  let type = conn.effectiveType || 'unknown';
+  let speed = conn.downlink ? conn.downlink + ' Mbps' : 'N/A';
+  return `${type} (${speed})`;
+}
+
+// Storage check
+function getStorageInfo() {
+  const features = [];
+  try { localStorage.test = 'test'; localStorage.removeItem('test'); features.push('LocalStorage'); } catch(_) {}
+  try { const db = indexedDB.open('test'); features.push('IndexedDB'); } catch(_) {}
+  if (navigator.cookieEnabled) features.push('Cookies');
+  
+  return features.length > 0 ? features.join(', ') : 'None';
+}
+
+// Timezone
+function getTimezoneInfo() {
+  const offset = new Date().getTimezoneOffset();
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  return `${tz} (UTC${offset > 0 ? '-' : '+'}${Math.abs(offset / 60).toString().padStart(2, '0')}:00)`;
+}
+
+// Canvas fingerprint
+function getCanvasFingerprint() {
+  try {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.textBaseline = 'top';
+    ctx.font = '14px Arial';
+    ctx.fillText('SandboxNet', 2, 2);
+    return canvas.toDataURL().substring(0, 32) + '...';
+  } catch(_) {
+    return 'N/A';
+  }
 }
 
 async function getIP() {
-  // try ipapi first, fallback to ipify
   try {
     const r = await fetch('https://ipapi.co/json/');
     if (r.ok) {
@@ -130,85 +313,131 @@ async function getIP() {
 }
 
 async function run() {
+  const currentLog = getStoredLog();
+  const lineCount = currentLog.split('\n').filter(l => l.trim() && l.startsWith('[')).length;
+  document.getElementById('counter').textContent = `${lineCount} entries`;
+
   await new Promise(r => setTimeout(r, 400));
 
+  // IP
   log('resolving public IP address...', 'info');
   const ipData = await getIP();
-
-  const ipDisplay = ipData.ip + (ipData.city ? `  |  ${ipData.city}, ${ipData.country}` : '') + (ipData.isp ? `  |  ${ipData.isp}` : '');
+  const ipDisplay = ipData.ip + (ipData.city ? `  |  ${ipData.city}, ${ipData.country}` : '');
   setVal('val-ip', ipDisplay);
-  log(`ip → ${ipData.ip}` + (ipData.city ? ` (${ipData.city}, ${ipData.country})` : ''), 'warn');
+  log(`ip → ${ipData.ip} (${ipData.city})`, 'warn');
 
-  await new Promise(r => setTimeout(r, 250));
+  await new Promise(r => setTimeout(r, 200));
 
-  const hostname = location.hostname || location.host || 'local-file';
+  // Connection
+  const conn = getConnectionInfo();
+  setVal('val-connection', conn);
+  log(`connection → ${conn}`, 'ok');
+
+  await new Promise(r => setTimeout(r, 180));
+
+  // Browser
+  const browserInfo = getBrowserInfo();
+  const browserDisplay = `${browserInfo.browser} v${browserInfo.version}`;
+  setVal('val-browser', browserDisplay);
+  log(`browser → ${browserDisplay}`, 'ok');
+
+  await new Promise(r => setTimeout(r, 180));
+
+  // Platform
   const platform = navigator.userAgentData?.platform || navigator.platform || 'unknown';
-  const ua       = navigator.userAgent;
-  const time     = iso();
+  setVal('val-platform', platform);
+  log(`platform → ${platform}`, 'ok');
 
-  setVal('val-hostname', hostname); log(`hostname  → ${hostname}`, 'ok');
   await new Promise(r => setTimeout(r, 180));
-  setVal('val-platform', platform); log(`platform  → ${platform}`, 'ok');
+
+  // Device type
+  const deviceType = getDeviceType();
+  setVal('val-device', deviceType);
+  log(`device → ${deviceType}`, 'ok');
+
   await new Promise(r => setTimeout(r, 180));
-  setVal('val-ua', ua);             log('user-agent captured', 'ok');
+
+  // Screen
+  const screen = `${window.screen.width}x${window.screen.height} @ ${window.screen.colorDepth}bit`;
+  setVal('val-screen', screen);
+  log(`screen → ${screen}`, 'ok');
+
   await new Promise(r => setTimeout(r, 180));
-  setVal('val-time', time);         log(`timestamp → ${time}`, 'ok');
+
+  // CPU cores
+  const cores = navigator.hardwareConcurrency || 'unknown';
+  setVal('val-cores', cores);
+  log(`cores → ${cores}`, 'ok');
+
+  await new Promise(r => setTimeout(r, 180));
+
+  // Memory
+  const memory = navigator.deviceMemory ? navigator.deviceMemory + ' GB' : 'unknown';
+  setVal('val-memory', memory);
+  log(`memory → ${memory}`, 'ok');
+
+  await new Promise(r => setTimeout(r, 180));
+
+  // GPU
+  const gpu = getWebGLInfo();
+  setVal('val-gpu-vendor', gpu.vendor);
+  setVal('val-gpu-renderer', gpu.renderer);
+  log(`gpu → ${gpu.vendor}`, 'ok');
+
+  await new Promise(r => setTimeout(r, 180));
+
+  // Timezone
+  const tz = getTimezoneInfo();
+  setVal('val-timezone', tz);
+  log(`timezone → ${tz}`, 'ok');
+
+  await new Promise(r => setTimeout(r, 180));
+
+  // Language
+  const lang = navigator.language || 'unknown';
+  setVal('val-language', lang);
+  log(`language → ${lang}`, 'ok');
+
+  await new Promise(r => setTimeout(r, 180));
+
+  // Touch
+  const touchStr = (navigator.maxTouchPoints > 0) ? 'Yes' : 'No';
+  setVal('val-touch', touchStr);
+  log(`touch → ${touchStr}`, 'ok');
+
+  await new Promise(r => setTimeout(r, 180));
+
+  // Storage
+  const storage = getStorageInfo();
+  setVal('val-storage', storage);
+  log(`storage → ${storage}`, 'ok');
+
+  await new Promise(r => setTimeout(r, 180));
+
+  // Timestamp
+  const time = iso();
+  setVal('val-time', time);
+  log(`timestamp → ${time}`, 'ok');
+
   await new Promise(r => setTimeout(r, 400));
 
-  // GET current list
-  log('fetching existing records...', 'info');
-  let records = [];
-  try {
-    const getRes = await fetch(BASE + '/latest', { headers: { 'X-Master-Key': API_KEY } });
-    if (getRes.ok) {
-      const data = await getRes.json();
-      const raw  = data.record;
-      records = Array.isArray(raw) ? raw
-              : (raw && Array.isArray(raw.devices)) ? raw.devices : [];
-      log(`fetched ${records.length} existing record(s)`, 'ok');
-    } else {
-      log(`GET → HTTP ${getRes.status}, starting fresh`, 'info');
-    }
-  } catch(e) { log('GET error: ' + e.message, 'err'); }
+  // Create comprehensive entry
+  const entry = `[${time}] IP: ${ipData.ip} | Browser: ${browserDisplay} | Platform: ${platform} | Device: ${deviceType} | Screen: ${screen} | GPU: ${gpu.vendor} | Cores: ${cores} | Memory: ${memory} | TZ: ${tz} | Lang: ${lang} | Touch: ${touchStr}`;
+  const newLog = currentLog + (currentLog.trim() ? '\n' : '') + entry;
 
-  // append
-  records.push({
-    id:        Date.now(),
-    ip:        ipData.ip,
-    city:      ipData.city,
-    country:   ipData.country,
-    isp:       ipData.isp,
-    hostname,
-    platform,
-    userAgent: ua,
-    timestamp: time
-  });
-
-  document.getElementById('counter').textContent = `${records.length} device${records.length!==1?'s':''}`;
-  await new Promise(r => setTimeout(r, 300));
-  log(`appending record #${records.length}...`, 'info');
-
-  // PUT
-  try {
-    const putRes = await fetch(BASE, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
-      body: JSON.stringify({ devices: records })
-    });
-    if (putRes.ok) {
-      log(`PUT → 200 OK`, 'ok');
-      log(`${records.length} device(s) total in bin`, 'ok');
-      showBadge(true, `TRANSMISSION COMPLETE — device #${records.length} logged`);
-    } else {
-      const txt = await putRes.text();
-      log(`PUT failed → HTTP ${putRes.status}`, 'err');
-      showBadge(false, `HTTP ${putRes.status}`);
-    }
-  } catch(e) {
-    log('network error: ' + e.message, 'err');
-    showBadge(false, e.message);
+  log('saving to local storage...', 'info');
+  if (saveLog(newLog)) {
+    const totalLines = newLog.split('\n').filter(l => l.trim() && l.startsWith('[')).length;
+    document.getElementById('counter').textContent = `${totalLines} entries`;
+    log(`storage → saved (#${totalLines})`, 'ok');
+    showBadge(true, `✓ device #${totalLines} logged`);
+  } else {
+    showBadge(false, 'storage error');
   }
 }
+
+document.getElementById('download-btn').addEventListener('click', downloadLog);
+document.getElementById('clear-btn').addEventListener('click', clearData);
 
 run();
 </script>
